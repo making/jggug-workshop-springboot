@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http:///www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Bookmarks</title>
+</head>
+<body>
+<div>
+    <h1>Bookmarks</h1>
+
+    <div>
+        <form th:action="@{/bookmark/create}" th:object="${bookmark}" method="post">
+            <dl>
+                <dt><label for="name">Name</label></dt>
+                <dd>
+                    <input type="name" id="name" name="name" th:field="*{name}"/>
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </dd>
+            </dl>
+            <dl>
+                <dt><label for="url">URL</label></dt>
+                <dd>
+                    <input type="url" id="url" name="url" th:field="*{url}"/>
+                    <span th:if="${#fields.hasErrors('url')}" th:errors="*{url}"></span>
+                </dd>
+            </dl>
+            <input type="submit" value="Add"/>
+        </form>
+    </div>
+    <div>
+        <form>
+            <ul>
+                <li th:each="bookmark : ${bookmarks}">
+                    <a th:href="${bookmark.url}" th:text="${bookmark.name}">dummy</a>
+                    <button type="submit" formmethod="post" th:formaction="@{'/bookmark/delete?id='+${bookmark.id}}">
+                        Remove
+                    </button>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+</body>
+</html>
