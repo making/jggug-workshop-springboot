@@ -7,7 +7,7 @@
 ## REST API
 ### Create bookmarks
 
-    $ curl http://localhost:8080/api/bookmarks -v -X POST -H 'Content-Type:application/json' -d '{"name":"Google", "url":"http://google.com"}'
+    $ curl http://localhost:8080/api/bookmarks -v -X POST -H 'Content-Type:application/json' -d '{"name":"Google", "url":"http://google.com"}'  -H 'Authorization: Bearer d4173676-2d00-4910-9b6f-237f053a0d31'
     * Adding handle: conn: 0x7fa3f4004000
     * Adding handle: send: 0
     * Adding handle: recv: 0
@@ -90,3 +90,13 @@ Go to [sample app on JSFIDDLE](http://jsfiddle.net/Ca2g2/).
 ## Traditinal Web App
 
 Access [http://localhost:8080/bookmark/list](http://localhost:8080/bookmark/list).
+
+
+
+## OAuth2
+
+    $ git checkout oauth2
+    $ mvn spring-boot:run
+    $ curl http://localhost:8080/oauth/token -v -X POST -u myclient:123456 -d 'password=hoge&username=hoge&grant_type=password&scope=read'
+    $ curl http://localhost:8080/oauth/token -v -X POST -u myclient:123456 -d 'grant_type=refresh_token&refresh_token=<refresh_token>'
+    $ curl http://localhost:8080/api/bookmarks -v -X POST -H 'Content-Type:application/json' -d '{"name":"Google", "url":"http://google.com"}'  -H 'Authorization: Bearer <access_token>'
