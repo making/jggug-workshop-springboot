@@ -90,3 +90,7 @@ Go to [sample app on JSFIDDLE](http://jsfiddle.net/Ca2g2/).
 ## Traditinal Web App
 
 Access [http://localhost:8080/bookmark/list](http://localhost:8080/bookmark/list).
+
+## Enable spring security
+
+    $ mvn spring-boot:run -Drun.arguments="--bookmark.security.enabled=true"
