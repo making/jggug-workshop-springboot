@@ -3,25 +3,26 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Bookmarks</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css"
+          th:href="@{/css/style.css}"/>
 </head>
 <body>
 <div>
     <h1>Bookmarks</h1>
-
     <div>
         <form th:action="@{/bookmark/create}" th:object="${bookmark}" method="post">
             <dl>
                 <dt><label for="name">Name</label></dt>
                 <dd>
-                    <input type="name" id="name" name="name" th:field="*{name}"/>
-                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                    <input type="name" id="name" name="name" th:field="*{name}" th:errorclass="error-input"/>
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-messages">error!</span>
                 </dd>
             </dl>
             <dl>
                 <dt><label for="url">URL</label></dt>
                 <dd>
-                    <input type="url" id="url" name="url" th:field="*{url}"/>
-                    <span th:if="${#fields.hasErrors('url')}" th:errors="*{url}"></span>
+                    <input type="url" id="url" name="url" th:field="*{url}" th:errorclass="error-input"/>
+                    <span th:if="${#fields.hasErrors('url')}" th:errors="*{url}" class="error-messages">error!</span>
                 </dd>
             </dl>
             <input type="submit" value="Add"/>

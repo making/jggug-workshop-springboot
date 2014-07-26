@@ -1,0 +1,15 @@
+.error-label {
+    color: #b94a48;
+}
+
+.error-input {
+    border-color: #b94a48;
+    margin-left: 5px;
+}
+
+.error-messages {
+    color: #b94a48;
+    display: inline;
+    padding-left: 5px;
+    overflow-x: auto;
+}
