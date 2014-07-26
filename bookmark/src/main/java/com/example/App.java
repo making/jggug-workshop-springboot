@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -53,5 +54,12 @@ public class App {
             public void destroy() {
             }
         });
+    }
+
+    @Bean
+    CharacterEncodingFilter characterEncodingFilter() {
+        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        filter.setEncoding("UTF-8");
+        return filter;
     }
 }
