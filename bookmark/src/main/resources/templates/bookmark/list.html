@@ -9,6 +9,7 @@
 <body>
 <div>
     <h1>Bookmarks</h1>
+
     <div>
         <form th:action="@{/bookmark/create}" th:object="${bookmark}" method="post">
             <dl>
@@ -29,16 +30,15 @@
         </form>
     </div>
     <div>
-        <form>
-            <ul>
-                <li th:each="bookmark : ${bookmarks}">
-                    <a th:href="${bookmark.url}" th:text="${bookmark.name}">dummy</a>
-                    <button type="submit" formmethod="post" th:formaction="@{'/bookmark/delete?id='+${bookmark.id}}">
-                        Remove
-                    </button>
-                </li>
-            </ul>
-        </form>
+        <ul>
+            <li th:each="bookmark : ${bookmarks}">
+                <a th:href="${bookmark.url}" th:text="${bookmark.name}">dummy</a>
+
+                <form style="display: inline" method="post" th:action="@{'/bookmark/delete?id='+${bookmark.id}}">
+                    <input type="submit" value="Remove"/>
+                </form>
+            </li>
+        </ul>
     </div>
 </div>
 </body>
