@@ -15,7 +15,7 @@
             <dl>
                 <dt><label for="name">Name</label></dt>
                 <dd>
-                    <input type="name" id="name" name="name" th:field="*{name}" th:errorclass="error-input"/>
+                    <input type="text" id="name" name="name" th:field="*{name}" th:errorclass="error-input"/>
                     <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-messages">error!</span>
                 </dd>
             </dl>
