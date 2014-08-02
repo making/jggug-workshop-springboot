@@ -1,45 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:th="http:///www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Bookmarks</title>
-    <link rel="stylesheet" type="text/css" href="../../static/css/style.css"
-          th:href="@{/css/style.css}"/>
+<meta charset="UTF-8" />
+<title>Bookmarks</title>
+<link rel="stylesheet" type="text/css"
+  href="../../static/css/style.css"
+  th:href="@{/css/style.css}" />
 </head>
 <body>
-<div>
+  <div>
     <h1>Bookmarks</h1>
-
     <div>
-        <form th:action="@{/bookmark/create}" th:object="${bookmark}" method="post">
-            <dl>
-                <dt><label for="name">Name</label></dt>
-                <dd>
-                    <input type="text" id="name" name="name" th:field="*{name}" th:errorclass="error-input"/>
-                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-messages">error!</span>
-                </dd>
-            </dl>
-            <dl>
-                <dt><label for="url">URL</label></dt>
-                <dd>
-                    <input type="url" id="url" name="url" th:field="*{url}" th:errorclass="error-input"/>
-                    <span th:if="${#fields.hasErrors('url')}" th:errors="*{url}" class="error-messages">error!</span>
-                </dd>
-            </dl>
-            <input type="submit" value="Add"/>
-        </form>
+      <form th:action="@{/bookmark/create}" th:object="${bookmark}"
+        method="post">
+        <dl>
+          <dt>
+            <label for="name">Name</label>
+          </dt>
+          <dd>
+            <input type="text" id="name" name="name" th:field="*{name}"
+              th:errorclass="error-input" /> <span
+              th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+              class="error-messages">error!</span>
+          </dd>
+        </dl>
+        <dl>
+          <dt>
+            <label for="url">URL</label>
+          </dt>
+          <dd>
+            <input type="url" id="url" name="url" th:field="*{url}"
+              th:errorclass="error-input" /> <span
+              th:if="${#fields.hasErrors('url')}" th:errors="*{url}"
+              class="error-messages">error!</span>
+          </dd>
+        </dl>
+        <input type="submit" value="Add" />
+      </form>
     </div>
     <div>
-        <ul>
-            <li th:each="bookmark : ${bookmarks}">
-                <a th:href="${bookmark.url}" th:text="${bookmark.name}">dummy</a>
-
-                <form style="display: inline" method="post" th:action="@{'/bookmark/delete?id='+${bookmark.id}}">
-                    <input type="submit" value="Remove"/>
-                </form>
-            </li>
-        </ul>
+      <ul>
+        <li th:each="bookmark : ${bookmarks}"><a
+          th:href="${bookmark.url}" th:text="${bookmark.name}">dummy</a>
+          <form style="display: inline" method="post"
+            th:action="@{/bookmark/delete?id=(${bookmark.id})}">
+            <input type="submit" value="Remove" />
+          </form></li>
+      </ul>
     </div>
-</div>
+  </div>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package com.example.service;
 
-
 import com.example.domain.Bookmark;
 import com.example.repository.BookmarkRepository;
 import org.springframework.beans.factory.annotation.Autowired;

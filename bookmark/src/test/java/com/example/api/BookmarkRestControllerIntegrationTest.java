@@ -1,8 +1,9 @@
 package com.example.api;
 
-import com.example.App;
-import com.example.domain.Bookmark;
-import com.example.repository.BookmarkRepository;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,18 +21,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import com.example.App;
+import com.example.domain.Bookmark;
+import com.example.repository.BookmarkRepository;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = App.class)
 @WebAppConfiguration
-@IntegrationTest("server.port:0")
+@IntegrationTest({ "server.port:0",
+        "spring.datasource.url:jdbc:h2:mem:bookmark;DB_CLOSE_ON_EXIT=FALSE" })
 public class BookmarkRestControllerIntegrationTest {
     @Autowired
     BookmarkRepository bookmarkRepository;
@@ -58,8 +59,9 @@ public class BookmarkRestControllerIntegrationTest {
 
     @Test
     public void testGetBookmarks() throws Exception {
-        ResponseEntity<List<Bookmark>> response = restTemplate.exchange(apiEndpoint, HttpMethod.GET,
-                null /*body,header*/, new ParameterizedTypeReference<List<Bookmark>>() {
+        ResponseEntity<List<Bookmark>> response = restTemplate.exchange(
+                apiEndpoint, HttpMethod.GET, null /* body,header */,
+                new ParameterizedTypeReference<List<Bookmark>>() {
                 });
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().size(), is(2));
@@ -81,27 +83,38 @@ public class BookmarkRestControllerIntegrationTest {
         google.setName("Google");
         google.setUrl("http://google.com");
 
-        ResponseEntity<Bookmark> response = restTemplate.exchange(apiEndpoint, HttpMethod.POST,
-                new HttpEntity<>(google), Bookmark.class);
+        ResponseEntity<Bookmark> response = restTemplate.exchange(apiEndpoint,
+                HttpMethod.POST, new HttpEntity<>(google), Bookmark.class);
         assertThat(response.getStatusCode(), is(HttpStatus.CREATED));
         Bookmark bookmark = response.getBody();
         assertThat(bookmark.getId(), is(notNullValue()));
         assertThat(bookmark.getName(), is(google.getName()));
         assertThat(bookmark.getUrl(), is(google.getUrl()));
 
-        assertThat(restTemplate.exchange(apiEndpoint, HttpMethod.GET,
-                null, new ParameterizedTypeReference<List<Bookmark>>() {
-                }).getBody().size(), is(3));
+        assertThat(
+                restTemplate
+                        .exchange(
+                                apiEndpoint,
+                                HttpMethod.GET,
+                                null,
+                                new ParameterizedTypeReference<List<Bookmark>>() {
+                                }).getBody().size(), is(3));
     }
 
     @Test
     public void testDeleteBookmarks() throws Exception {
-        ResponseEntity<Void> response = restTemplate.exchange(apiEndpoint + "/{id}", HttpMethod.DELETE, null /*body,header*/,
+        ResponseEntity<Void> response = restTemplate.exchange(apiEndpoint
+                + "/{id}", HttpMethod.DELETE, null /* body,header */,
                 Void.class, Collections.singletonMap("id", springIO.getId()));
         assertThat(response.getStatusCode(), is(HttpStatus.NO_CONTENT));
 
-        assertThat(restTemplate.exchange(apiEndpoint, HttpMethod.GET,
-                null, new ParameterizedTypeReference<List<Bookmark>>() {
-                }).getBody().size(), is(1));
+        assertThat(
+                restTemplate
+                        .exchange(
+                                apiEndpoint,
+                                HttpMethod.GET,
+                                null,
+                                new ParameterizedTypeReference<List<Bookmark>>() {
+                                }).getBody().size(), is(1));
     }
 }

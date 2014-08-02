@@ -34,7 +34,8 @@ public class BookmarkController {
     }
 
     @RequestMapping(value = "create", method = RequestMethod.POST)
-    String create(@Validated Bookmark bookmark, BindingResult bindingResult, Model model) {
+    String create(@Validated Bookmark bookmark, BindingResult bindingResult,
+            Model model) {
         if (bindingResult.hasErrors()) {
             return list(model);
         }

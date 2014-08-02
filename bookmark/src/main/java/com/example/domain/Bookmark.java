@@ -23,6 +23,8 @@ public class Bookmark {
     @URL
     private String url;
 
+    // setter & getter
+    
     public Long getId() {
         return id;
     }
@@ -45,14 +47,5 @@ public class Bookmark {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    @Override
-    public String toString() {
-        return "Bookmark{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", url='" + url + '\'' +
-                '}';
     }
 }
