@@ -1,15 +1,6 @@
 package com.example;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-
-import javax.sql.DataSource;
-
 import net.sf.log4jdbc.Log4jdbcProxyDataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
@@ -22,6 +13,14 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 @Configuration
 public class AppConfig {
     @Autowired
@@ -30,12 +29,28 @@ public class AppConfig {
 
     @ConfigurationProperties(prefix = DataSourceAutoConfiguration.CONFIGURATION_PREFIX)
     @Bean(destroyMethod = "close")
-    DataSource realDataSource() {
+    DataSource realDataSource() throws URISyntaxException {
+        String url;
+        String username;
+        String password;
+
+        String databaseUrl = System.getenv("DATABASE_URL");
+        if (databaseUrl != null) {
+            URI dbUri = new URI(databaseUrl);
+            url = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath() + ":" + dbUri.getPort() + dbUri.getPath();
+            username = dbUri.getUserInfo().split(":")[0];
+            password = dbUri.getUserInfo().split(":")[1];
+        } else {
+            url = this.properties.getUrl();
+            username = this.properties.getUsername();
+            password = this.properties.getPassword();
+        }
+
         DataSourceBuilder factory = DataSourceBuilder
                 .create(this.properties.getClassLoader())
-                .url(this.properties.getUrl())
-                .username(this.properties.getUsername())
-                .password(this.properties.getPassword());
+                .url(url)
+                .username(username)
+                .password(password);
         this.dataSource = factory.build();
         return this.dataSource;
     }
@@ -59,7 +74,7 @@ public class AppConfig {
     Filter corsFilter() {
         return new Filter() {
             public void doFilter(ServletRequest req, ServletResponse res,
-                    FilterChain chain) throws IOException, ServletException {
+                                 FilterChain chain) throws IOException, ServletException {
                 HttpServletRequest request = (HttpServletRequest) req;
                 HttpServletResponse response = (HttpServletResponse) res;
                 String method = request.getMethod();

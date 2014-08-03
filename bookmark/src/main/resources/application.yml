@@ -1,14 +1,33 @@
 spring:
+  profle:
+    active: dev
   thymeleaf:
     cache: false
-  datasource:
-    driverClassName: org.h2.Driver
-    url: jdbc:h2:file:/tmp/bookmark
-    username: sa
-    password:
-  jpa:
-    hibernate:
-      ddl-auto: update
+  resources:
+    cache-period: #{60 * 60 * 24 * 3}
 security:
   basic:
     enabled: false
+
+---
+spring:
+    profiles: dev
+    datasource:
+      driverClassName: org.h2.Driver
+      url: jdbc:h2:file:/tmp/bookmark
+      username: sa
+      password:
+    jpa:
+      database: H2
+      hibernate:
+        ddl-auto: update
+
+---
+spring:
+    profiles: heroku
+    datasource:
+      driverClassName: org.postgresql.Driver
+    jpa:
+      database: POSTGRESQL
+      hibernate:
+        ddl-auto: update
