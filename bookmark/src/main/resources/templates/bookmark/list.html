@@ -43,7 +43,7 @@
         <li th:each="bookmark : ${bookmarks}"><a
           th:href="${bookmark.url}" th:text="${bookmark.name}">dummy</a>
           <form style="display: inline" method="post"
-            th:action="@{/bookmark/delete?id=(${bookmark.id})}">
+            th:action="@{/bookmark/delete?(id=${bookmark.id})}">
             <input type="submit" value="Remove" />
           </form></li>
       </ul>
